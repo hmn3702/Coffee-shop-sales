@@ -1,0 +1,70 @@
+table dim_product
+	lineageTag: a24b4462-c606-472c-bcf8-a7a822817545
+
+	column product_id
+		dataType: int64
+		lineageTag: a81b553e-7bf9-483d-b1fd-d3ce13e1e4f3
+		summarizeBy: none
+		sourceColumn: product_id
+
+	column product_name
+		dataType: string
+		lineageTag: e332dc72-ab59-4998-9bef-eebc782e478f
+		summarizeBy: none
+		sourceColumn: product_name
+
+	column product_detail
+		dataType: string
+		lineageTag: f10f154e-6c68-47c0-a0b8-aaa02ff254b7
+		summarizeBy: none
+		sourceColumn: product_detail
+
+	column size
+		dataType: string
+		lineageTag: b65ae620-4f6a-485f-ac6e-cb7784899297
+		summarizeBy: none
+		sourceColumn: size
+		sortByColumn: size_order
+
+	column size_order
+		dataType: int64
+		isHidden
+		lineageTag: 18c5f27a-5765-40d6-be76-447b1f023d26
+		summarizeBy: none
+		sourceColumn: size_order
+
+	column product_type
+		dataType: string
+		lineageTag: 17a25da9-eab4-4a45-8ad4-34a48948dca1
+		summarizeBy: none
+		sourceColumn: product_type
+
+	column product_category
+		dataType: string
+		lineageTag: 2701cc92-5b7e-4b6d-9f56-5ff8970eba8e
+		summarizeBy: none
+		sourceColumn: product_category
+
+	column is_beverage
+		dataType: string
+		lineageTag: 18c03e91-7932-426d-8d4d-871958c7a423
+		summarizeBy: none
+		sourceColumn: is_beverage
+
+	column list_price
+		dataType: decimal
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: b8b9906b-04cf-4592-bd6c-9c9610b8e537
+		summarizeBy: none
+		sourceColumn: list_price
+
+	partition dim_product = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "dim_product.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    Typed = Table.TransformColumnTypes(Promoted, {{"product_id", Int64.Type}, {"product_name", type text}, {"product_detail", type text}, {"size", type text}, {"size_order", Int64.Type}, {"product_type", type text}, {"product_category", type text}, {"is_beverage", type text}, {"list_price", Currency.Type}}, "en-US")
+				in
+				    Typed
+

@@ -1,0 +1,16 @@
+relationship 984d8fcf-b08f-45a5-8af7-3b589fa3a68c
+	fromColumn: fact_sales.date_key
+	toColumn: dim_date.date_key
+
+relationship 7c665a7a-1ff5-4a9a-a1b2-ec32d270c058
+	fromColumn: fact_sales.time_key
+	toColumn: dim_time.time_key
+
+relationship c9ef0a91-7097-46d4-8484-b5f65025050e
+	fromColumn: fact_sales.store_id
+	toColumn: dim_store.store_id
+
+relationship a2517f19-73ce-45f6-aeb4-ccdefaf6db66
+	fromColumn: fact_sales.product_id
+	toColumn: dim_product.product_id
+

@@ -1,0 +1,5 @@
+expression DataFolder = "E:\project\coffee_shop_sale\data\processed\" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: 890ad89b-b3e0-4c2e-bd6a-88a24fcd6c95
+
+	annotation PBI_ResultType = Text
+

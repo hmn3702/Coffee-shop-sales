@@ -1,0 +1,104 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Coffee Shop Sales — Jan–Jun 2023 Analysis</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{--bg:#faf8f5;--card:#fff;--ink:#2a211b;--mut:#7a6e65;--line:#e9e3dc;--a:#6b4226;--b:#c08552;--c:#8fa38a;--d:#d9b38c}
+@media (prefers-color-scheme:dark){:root{--bg:#1a1613;--card:#241f1b;--ink:#f1ebe4;--mut:#a89c91;--line:#3a322b}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 Inter,system-ui,sans-serif}
+.wrap{max-width:1100px;margin:0 auto;padding:28px 18px 60px}
+h1{font-size:28px;margin:0 0 4px}h2{font-size:19px;margin:36px 0 10px}.sub{color:var(--mut);margin:0 0 20px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
+.k{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}.k b{display:block;font-size:24px}.k span{color:var(--mut);font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,480px),1fr));gap:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px}.card h3{margin:0 0 4px;font-size:15px}.card p{margin:0 0 10px;color:var(--mut);font-size:13.5px}
+.cv{position:relative;height:280px}
+.note{background:var(--card);border-left:4px solid var(--b);border-radius:8px;padding:12px 16px;margin:10px 0}
+.tag{font-size:11.5px;font-weight:600;padding:1px 7px;border-radius:99px;background:var(--line);white-space:nowrap}
+table{width:100%;border-collapse:collapse;font-size:14px}td,th{padding:8px 6px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}th{color:var(--mut);font-weight:500}
+ol li,ul li{margin:6px 0}
+</style></head><body><div class="wrap">
+<h1>Coffee Shop Sales — Full Analysis</h1>
+<p class="sub">3 NYC stores · 1 Jan – 30 Jun 2023 · 149,116 line items · 80 products · Source: Coffee Shop Sales.xlsx</p>
+<div class="kpis">
+<div class="k"><b>$698,812</b><span>Revenue (6 months)</span></div>
+<div class="k"><b>+111%</b><span>Revenue/day, Jan → Jun</span></div>
+<div class="k"><b>$4.69</b><span>Avg value per line item (flat all period)</span></div>
+<div class="k"><b>46%</b><span>Revenue earned 7–11am</span></div>
+<div class="k"><b>67%</b><span>Coffee + Tea share of revenue</span></div>
+</div>
+
+<h2>1. Executive summary</h2>
+<ol>
+<li><b>Growth is entirely volume-driven.</b> Revenue/day rose from $2,635 (Jan) to $5,550 (Jun). Line items/day went 559 → 1,178, while average line value stayed at $4.65–4.72 and average unit price at ~$3.38. Prices and basket value did not move; more transactions did. <span class="tag">Chắc Chắn</span></li>
+<li><b>The three stores are near-identical.</b> Each holds 33–34% of revenue, grew at the same rate every month, and has the same category mix (Coffee 38.6–38.7% in every store). The real differences are <i>when</i> they trade, not how much. <span class="tag">Chắc Chắn</span></li>
+<li><b>Morning is the business.</b> 7–11am brings 46% of revenue. Lower Manhattan relies on mornings most (57% of its revenue before 11am); Astoria least (39%), with steady trade until close. <span class="tag">Chắc Chắn</span></li>
+<li><b>Long tail.</b> 43 of 80 products make 80% of revenue. The bottom 10 together earn under $14k over six months, about 2% of the total. <span class="tag">Chắc Chắn</span></li>
+<li><b>Day of week doesn't matter.</b> Average revenue/day ranges only $3,782 (Sun) to $3,911 (Mon), a 3% spread. Weekend promotions have no demand gap to fill. <span class="tag">Chắc Chắn</span></li>
+</ol>
+<div class="note"><b>Read this before acting on the results.</b> (a) There is no basket or receipt ID: each row is one product line, so "$4.69" is the value <i>per line</i>, not per customer visit, and attach rates or basket analysis can't be measured. (b) There is no cost, staffing or margin data, so the evidence covers revenue only, not profit. (c) Store shares this even, identical monthly growth and flat weekdays are unusual for real retail. This looks like a synthetic or teaching dataset (it matches the public Maven Analytics "Coffee Shop Sales" set). Treat the store comparisons as an exercise, not as proof about real stores. <span class="tag">Có Khả Năng Cao</span></div>
+
+<h2>2. Trend</h2>
+<div class="grid">
+<div class="card"><h3>Weekly revenue</h3><p>Steady climb, with a dip in early February and a slight plateau in late May. The partial first and last weeks are excluded.</p><div class="cv"><canvas id="wk"></canvas></div></div>
+<div class="card"><h3>Revenue per day vs line items per day (monthly)</h3><p>The two lines move together, so the average line value stays flat. Growth came from volume, not price.</p><div class="cv"><canvas id="mo"></canvas></div></div>
+</div>
+
+<h2>3. Stores &amp; time of day</h2>
+<div class="grid">
+<div class="card"><h3>Monthly revenue by store</h3><p>The three lines almost overlap. Hell's Kitchen leads, but by at most 2.8% (vs Lower Manhattan).</p><div class="cv"><canvas id="ms"></canvas></div></div>
+<div class="card"><h3>Average revenue per day, by hour and store</h3><p>Hell's Kitchen and Lower Manhattan spike in the morning. Astoria opens at 7 and stays flat at ~$85/hr until close. Lower Manhattan almost stops trading after 6pm (3.3% of its revenue).</p><div class="cv"><canvas id="hr"></canvas></div></div>
+<div class="card"><h3>Average revenue by day of week</h3><p>Flat. The axis starts at zero on purpose: the spread is only 3%.</p><div class="cv"><canvas id="dw"></canvas></div></div>
+<div class="card"><h3>Opening hours seen in the data</h3><table><tr><th>Store</th><th>First sale</th><th>Last sale</th><th>Revenue before 11am</th></tr>
+<tr><td>Astoria</td><td>07:00</td><td>19:59</td><td>38.5%</td></tr><tr><td>Hell's Kitchen</td><td>06:30</td><td>20:59</td><td>51.4%</td></tr><tr><td>Lower Manhattan</td><td>06:00</td><td>20:28</td><td>56.9%</td></tr></table></div>
+</div>
+
+<h2>4. Products</h2>
+<div class="grid">
+<div class="card"><h3>Revenue by category</h3><p>Coffee 38.6%, Tea 28.1%, Bakery 11.8%, Drinking Chocolate 10.4%. Retail lines (beans, branded, loose tea, packaged chocolate) total about 10%.</p><div class="cv"><canvas id="cat"></canvas></div></div>
+<div class="card"><h3>Top 12 product types</h3><p>Barista espresso (13.1%), brewed chai (11.0%) and hot chocolate (10.4%) lead.</p><div class="cv"><canvas id="typ"></canvas></div></div>
+<div class="card"><h3>Pareto: cumulative share of revenue across 80 products</h3><p>Product 43 is where the line crosses 80%.</p><div class="cv"><canvas id="par"></canvas></div></div>
+<div class="card"><h3>Drink size mix (rows with a size label)</h3><p>Small is only 13% of sized lines. Large is the biggest revenue size at an average $3.47 vs $2.85 for Regular.</p><div class="cv"><canvas id="sz"></canvas></div></div>
+<div class="card"><h3>Top 10 products</h3><div class="cv"><canvas id="top"></canvas></div></div>
+<div class="card"><h3>Bottom 10 products</h3><p>8 loose-leaf teas, 1 packaged chocolate and 1 green coffee bean: retail packs, not drinks.</p><div class="cv"><canvas id="bot"></canvas></div></div>
+</div>
+
+<h2>5. Data quality</h2>
+<ul>
+<li>No missing values and no duplicate transaction IDs. <span class="tag">Chắc Chắn</span></li>
+<li>4 made-to-order drinks have no size in their name: "Latte" ($3.75) sits next to "Latte Rg" ($4.25), "Cappuccino" ($3.75) next to "Cappuccino Lg" ($4.25), plus "Espresso shot" and "Ouro Brasileiro shot". The model labels them "Unlabelled". They are top sellers (Latte alone ≈ $17k), so size-level results are approximate. <span class="tag">Chắc Chắn</span></li>
+<li>15 products have more than one unit price. Most differences are cents (bakery ±$0.02), but the T-shirt ranges $23–28 and Organic Decaf $22.50–28. This could be a price change or a data entry issue. <span class="tag">Ước Đoán</span></li>
+<li>Quantity per line is 1–2 in 98% of rows. There are 13 lines with qty 6–8; these look like group orders, not errors. <span class="tag">Có Khả Năng Cao</span></li>
+</ul>
+
+<h2>6. Recommendations to grow income</h2>
+<p class="sub">Ranked by evidence strength. The dollar figures are illustrative sizing over the same 6 months, not forecasts.</p>
+<table>
+<tr><th>#</th><th>Action</th><th>Evidence</th><th>Rough size</th></tr>
+<tr><td>1</td><td><b>Protect morning throughput</b>: more staff 7–11am, pre-order or mobile pickup, a fast lane for the top 10 drinks.</td><td>46% of revenue in 4 hours, and growth is all volume, so capacity at peak is the main constraint. <span class="tag">Có Khả Năng Cao</span></td><td>Biggest lever. Can't size it without wait-time or lost-sales data.</td></tr>
+<tr><td>2</td><td><b>Afternoon offer (12–5pm)</b>: drink + bakery bundle, or a happy-hour on tea/iced drinks.</td><td>Revenue/hour drops ~50% after 11am. Bakery share falls from 16% to ~14% after noon. <span class="tag">Có Khả Năng Cao</span></td><td>+10% afternoon revenue ≈ +$25k</td></tr>
+<tr><td>3</td><td><b>Review Lower Manhattan evening hours</b> (after 6pm).</td><td>Only 3.3% of its revenue. Cutting hours could save labour, or try an evening offer first. <span class="tag">Ước Đoán</span> (no cost data)</td><td>Cost saving, not revenue</td></tr>
+<tr><td>4</td><td><b>Bakery pairing at the till</b> during the morning peak.</td><td>Bakery ≈ 23k units vs ≈159k coffee/tea units, about 1 per 7 drinks. The real attach rate can't be measured without a basket ID. <span class="tag">Ước Đoán</span></td><td>+10% bakery units ≈ +$8k</td></tr>
+<tr><td>5</td><td><b>Review the retail range</b> (loose tea, packaged chocolate, green beans) before cutting anything.</td><td>The bottom 10 products are all retail packs and earn ≈ 2% of revenue. Retail can have different margins and shelf costs, which this data does not show. <span class="tag">Có Khả Năng Cao</span></td><td>Small on revenue; possible cost and shelf-space saving</td></tr>
+<tr><td>6</td><td><b>Size upsell</b> (Regular → Large prompt).</td><td>Average gap ≈ $0.63. <span class="tag">Chắc Chắn</span> on the math</td><td>10% conversion ≈ +$3k, a small lever</td></tr>
+</table>
+<div class="note">Skip: weekend-specific campaigns (no weekday gap) and store-specific category strategies (the mix is identical across stores). The data gives no support for either.</div>
+</div>
+<script>
+const D={"months": ["2023-01", "2023-02", "2023-03", "2023-04", "2023-05", "2023-06"], "rev_day": [2635.0, 2719.0, 3188.0, 3965.0, 5056.0, 5550.0], "tx_day": [559.0, 584.0, 685.0, 844.0, 1082.0, 1178.0], "avg_line": [4.72, 4.65, 4.66, 4.69, 4.67, 4.71], "month_store": {"Astoria": [27314.0, 25105.0, 32835.0, 39478.0, 52429.0, 55083.0], "Hell's Kitchen": [27821.0, 25720.0, 33111.0, 40304.0, 52599.0, 56957.0], "Lower Manhattan": [26543.0, 25320.0, 32889.0, 39159.0, 51700.0, 54446.0]}, "weeks": ["08 Jan", "15 Jan", "22 Jan", "29 Jan", "05 Feb", "12 Feb", "19 Feb", "26 Feb", "05 Mar", "12 Mar", "19 Mar", "26 Mar", "02 Apr", "09 Apr", "16 Apr", "23 Apr", "30 Apr", "07 May", "14 May", "21 May", "28 May", "04 Jun", "11 Jun", "18 Jun", "25 Jun"], "week_rev": [17139.0, 19130.0, 19819.0, 18272.0, 17232.0, 18333.0, 19857.0, 20063.0, 20390.0, 22146.0, 23595.0, 23395.0, 22056.0, 26080.0, 28981.0, 29218.0, 27387.0, 32110.0, 36057.0, 38477.0, 36605.0, 33914.0, 37457.0, 41316.0, 40765.0], "cat": ["Coffee", "Tea", "Bakery", "Drinking Chocolate", "Coffee beans", "Branded", "Loose Tea", "Flavours", "Packaged Chocolate"], "cat_rev": [269952.0, 196406.0, 82316.0, 72416.0, 40085.0, 13607.0, 11214.0, 8409.0, 4408.0], "type": ["Barista Espresso", "Brewed Chai tea", "Hot chocolate", "Gourmet brewed coffee", "Brewed Black tea", "Brewed herbal tea", "Premium brewed coffee", "Organic brewed coffee", "Scone", "Drip coffee", "Pastry", "Brewed Green tea"], "type_rev": [91406.0, 77082.0, 72416.0, 70035.0, 47932.0, 47540.0, 38781.0, 37746.0, 36866.0, 31984.0, 25656.0, 23852.0], "top": ["Sustainably Grown Organic Lg", "Dark chocolate Lg", "Latte Rg", "Cappuccino Lg", "Morning Sunrise Chai Lg", "Latte", "Jamaican Coffee River Lg", "Sustainably Grown Organic Rg", "Cappuccino", "Brazilian Lg"], "top_rev": [21152.0, 21006.0, 19112.0, 17642.0, 17384.0, 17258.0, 16481.0, 16234.0, 15998.0, 15110.0], "bot": ["Morning Sunrise Chai", "Serenity Green Tea", "English Breakfast", "Traditional Blend Chai", "Peppermint", "Lemon Grass", "Guatemalan Sustainably Grown", "Spicy Eye Opener Chai", "Earl Grey", "Dark chocolate"], "bot_rev": [1596.0, 1471.0, 1441.0, 1369.0, 1369.0, 1360.0, 1340.0, 1336.0, 1271.0, 755.0], "pareto": [3.0, 6.0, 8.8, 11.3, 13.8, 16.2, 18.6, 20.9, 23.2, 25.4, 27.5, 29.5, 31.5, 33.3, 35.2, 37.1, 38.9, 40.8, 42.6, 44.4, 46.2, 48.0, 49.7, 51.5, 53.2, 54.9, 56.6, 58.2, 59.9, 61.5, 63.2, 64.8, 66.4, 68.0, 69.5, 71.0, 72.5, 73.9, 75.3, 76.7, 78.0, 79.2, 80.5, 81.7, 82.9, 84.0, 85.0, 86.0, 86.9, 87.9, 88.8, 89.8, 90.7, 91.4, 92.1, 92.8, 93.4, 94.0, 94.4, 94.9, 95.3, 95.7, 96.1, 96.4, 96.7, 97.0, 97.3, 97.6, 97.9, 98.1, 98.3, 98.5, 98.7, 98.9, 99.1, 99.3, 99.5, 99.7, 99.9, 100.0], "hours": [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20], "hour_store": {"Astoria": [0.0, 105.0, 126.0, 128.0, 135.0, 86.0, 87.0, 88.0, 84.0, 86.0, 89.0, 88.0, 88.0, 94.0, 0.0], "Hell's Kitchen": [42.0, 88.0, 174.0, 182.0, 186.0, 99.0, 63.0, 67.0, 68.0, 62.0, 66.0, 71.0, 66.0, 59.0, 15.0], "Lower Manhattan": [79.0, 158.0, 157.0, 161.0, 169.0, 71.0, 73.0, 68.0, 76.0, 82.0, 72.0, 64.0, 36.0, 4.0, 2.0]}, "dow": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"], "dow_rev": [3911.0, 3825.0, 3858.0, 3876.0, 3899.0, 3876.0, 3782.0], "size": ["Sm", "Rg", "Lg"], "size_tx": [13924, 45789, 44885], "size_rev": [46403.0, 199761.0, 237958.0], "size_p": [2.17, 2.85, 3.47]};
+const css=getComputedStyle(document.documentElement),ink=css.getPropertyValue('--mut').trim(),line=css.getPropertyValue('--line').trim();
+const C=['#6b4226','#c08552','#8fa38a','#d9b38c','#a0522d','#5f7a8a','#b5838d','#9c8f5c','#7a6e65'];
+Chart.defaults.color=ink;Chart.defaults.borderColor=line;Chart.defaults.font.family='Inter,system-ui,sans-serif';Chart.defaults.maintainAspectRatio=false;
+const money=v=>'$'+Math.round(v).toLocaleString();
+const tip={callbacks:{label:c=>(c.dataset.label?c.dataset.label+': ':'')+(c.dataset.fmt==='n'?c.parsed.y.toLocaleString():c.dataset.fmt==='pct'?c.parsed.y+'%':money(c.parsed.x!==undefined&&c.chart.options.indexAxis==='y'?c.parsed.x:c.parsed.y))}};
+new Chart(wk,{type:'line',data:{labels:D.weeks,datasets:[{label:'Revenue',data:D.week_rev,borderColor:C[0],backgroundColor:C[0]+'22',fill:true,tension:.3,pointRadius:2}]},options:{plugins:{legend:{display:false},tooltip:tip},scales:{y:{beginAtZero:true,ticks:{callback:money}}}}});
+new Chart(mo,{type:'bar',data:{labels:D.months,datasets:[{label:'Revenue/day',data:D.rev_day,backgroundColor:C[1],yAxisID:'y'},{type:'line',label:'Line items/day',fmt:'n',data:D.tx_day,borderColor:C[0],yAxisID:'y1'}]},options:{plugins:{tooltip:tip},scales:{y:{beginAtZero:true,ticks:{callback:money}},y1:{beginAtZero:true,position:'right',grid:{display:false}}}}});
+const st=Object.keys(D.month_store);
+new Chart(ms,{type:'line',data:{labels:D.months,datasets:st.map((s,i)=>({label:s,data:D.month_store[s],borderColor:C[i],tension:.3}))},options:{plugins:{tooltip:tip},scales:{y:{beginAtZero:true,ticks:{callback:money}}}}});
+new Chart(hr,{type:'line',data:{labels:D.hours.map(h=>h+':00'),datasets:Object.keys(D.hour_store).map((s,i)=>({label:s,data:D.hour_store[s],borderColor:C[i],tension:.3}))},options:{plugins:{tooltip:tip},scales:{y:{beginAtZero:true,ticks:{callback:money}}}}});
+new Chart(dw,{type:'bar',data:{labels:D.dow,datasets:[{data:D.dow_rev,backgroundColor:C[2]}]},options:{plugins:{legend:{display:false},tooltip:tip},scales:{y:{beginAtZero:true,ticks:{callback:money}}}}});
+const hbar=(el,l,v,col)=>new Chart(el,{type:'bar',data:{labels:l,datasets:[{data:v,backgroundColor:col}]},options:{indexAxis:'y',plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>money(c.parsed.x)}}},scales:{x:{beginAtZero:true,ticks:{callback:money}}}}});
+hbar(cat,D.cat,D.cat_rev,C[0]);hbar(typ,D.type,D.type_rev,C[1]);hbar(top,D.top,D.top_rev,C[0]);hbar(bot,D.bot,D.bot_rev,C[3]);
+new Chart(par,{type:'line',data:{labels:D.pareto.map((_,i)=>i+1),datasets:[{label:'Cumulative %',fmt:'pct',data:D.pareto,borderColor:C[0],pointRadius:0},{label:'80%',fmt:'pct',data:D.pareto.map(()=>80),borderColor:C[1],borderDash:[5,4],pointRadius:0}]},options:{plugins:{tooltip:tip},scales:{y:{min:0,max:100,ticks:{callback:v=>v+'%'}},x:{title:{display:true,text:'Products ranked by revenue'}}}}});
+new Chart(sz,{type:'bar',data:{labels:D.size.map((s,i)=>s+' (avg $'+D.size_p[i]+')'),datasets:[{label:'Revenue',data:D.size_rev,backgroundColor:C[1],yAxisID:'y'},{label:'Line items',fmt:'n',data:D.size_tx,backgroundColor:C[2],yAxisID:'y1'}]},options:{plugins:{tooltip:tip},scales:{y:{beginAtZero:true,ticks:{callback:money}},y1:{beginAtZero:true,position:'right',grid:{display:false}}}}});
+</script></body></html>

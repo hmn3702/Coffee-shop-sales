@@ -1,0 +1,100 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 0,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 631.08108934418556,
+            "y": 128.06395736783969
+          },
+          "nodeIndex": "dim_date",
+          "nodeLineageTag": "187b5625-bc92-49fb-8c46-51232df4eab2",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 551.53447475004009,
+            "y": 478.37112935859363
+          },
+          "nodeIndex": "dim_product",
+          "nodeLineageTag": "a24b4462-c606-472c-bcf8-a7a822817545",
+          "size": {
+            "height": 296,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 148.98371575091392,
+            "y": -50
+          },
+          "nodeIndex": "dim_store",
+          "nodeLineageTag": "b7669a02-d9f4-4bd7-84d2-3991b2014377",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 50,
+            "y": 331.65134274883457
+          },
+          "nodeIndex": "dim_time",
+          "nodeLineageTag": "69856344-aa53-4ca6-8bea-9edfd9a7fab6",
+          "size": {
+            "height": 248,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 334.18778575383521,
+            "y": 128.18737986008807
+          },
+          "nodeIndex": "fact_sales",
+          "nodeLineageTag": "90ddd9ff-5f01-49cf-9709-41cd51c1f4b7",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 865.08108934418556,
+            "y": 276.18556467929682
+          },
+          "nodeIndex": "Glossary",
+          "nodeLineageTag": "0ac4187e-ac6f-495d-b6aa-adf31b1f1d90",
+          "size": {
+            "height": 272,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "All tables",
+      "zoomValue": 100,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "All tables",
+  "defaultDiagram": "All tables"
+}

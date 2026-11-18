@@ -1,0 +1,81 @@
+product_id,product_name,product_detail,size,size_order,product_type,product_category,is_beverage,list_price
+1,Brazilian - Organic,Brazilian - Organic,Not applicable,5,Organic Beans,Coffee beans,Non-beverage,18.0
+2,Our Old Time Diner Blend,Our Old Time Diner Blend,Not applicable,5,House blend Beans,Coffee beans,Non-beverage,18.0
+3,Espresso Roast,Espresso Roast,Not applicable,5,Espresso Beans,Coffee beans,Non-beverage,14.75
+4,Primo Espresso Roast,Primo Espresso Roast,Not applicable,5,Espresso Beans,Coffee beans,Non-beverage,20.45
+5,Columbian Medium Roast,Columbian Medium Roast,Not applicable,5,Gourmet Beans,Coffee beans,Non-beverage,15.0
+6,Ethiopia,Ethiopia,Not applicable,5,Gourmet Beans,Coffee beans,Non-beverage,21.0
+7,Jamacian Coffee River,Jamacian Coffee River,Not applicable,5,Premium Beans,Coffee beans,Non-beverage,19.75
+8,Civet Cat,Civet Cat,Not applicable,5,Premium Beans,Coffee beans,Non-beverage,45.0
+9,Organic Decaf Blend,Organic Decaf Blend,Not applicable,5,Organic Beans,Coffee beans,Non-beverage,22.5
+10,Guatemalan Sustainably Grown,Guatemalan Sustainably Grown,Not applicable,5,Green beans,Coffee beans,Non-beverage,10.0
+11,Lemon Grass,Lemon Grass,Not applicable,5,Herbal tea,Loose Tea,Non-beverage,8.95
+12,Peppermint,Peppermint,Not applicable,5,Herbal tea,Loose Tea,Non-beverage,8.95
+13,English Breakfast,English Breakfast,Not applicable,5,Black tea,Loose Tea,Non-beverage,8.95
+14,Earl Grey,Earl Grey,Not applicable,5,Black tea,Loose Tea,Non-beverage,8.95
+15,Serenity Green Tea,Serenity Green Tea,Not applicable,5,Green tea,Loose Tea,Non-beverage,9.25
+16,Traditional Blend Chai,Traditional Blend Chai,Not applicable,5,Chai tea,Loose Tea,Non-beverage,8.95
+17,Morning Sunrise Chai,Morning Sunrise Chai,Not applicable,5,Chai tea,Loose Tea,Non-beverage,9.5
+18,Spicy Eye Opener Chai,Spicy Eye Opener Chai,Not applicable,5,Chai tea,Loose Tea,Non-beverage,10.95
+19,Dark chocolate,Dark chocolate,Not applicable,5,Drinking Chocolate,Packaged Chocolate,Non-beverage,6.4
+20,Sustainably Grown Organic,Sustainably Grown Organic,Not applicable,5,Organic Chocolate,Packaged Chocolate,Non-beverage,7.6
+21,Chili Mayan,Chili Mayan,Not applicable,5,Drinking Chocolate,Packaged Chocolate,Non-beverage,13.33
+22,Our Old Time Diner Blend,Our Old Time Diner Blend Sm,Small,1,Drip coffee,Coffee,Beverage,2.0
+23,Our Old Time Diner Blend,Our Old Time Diner Blend Rg,Regular,2,Drip coffee,Coffee,Beverage,2.5
+24,Our Old Time Diner Blend,Our Old Time Diner Blend Lg,Large,3,Drip coffee,Coffee,Beverage,3.0
+25,Brazilian,Brazilian Sm,Small,1,Organic brewed coffee,Coffee,Beverage,2.2
+26,Brazilian,Brazilian Rg,Regular,2,Organic brewed coffee,Coffee,Beverage,3.0
+27,Brazilian,Brazilian Lg,Large,3,Organic brewed coffee,Coffee,Beverage,3.5
+28,Columbian Medium Roast,Columbian Medium Roast Sm,Small,1,Gourmet brewed coffee,Coffee,Beverage,2.0
+29,Columbian Medium Roast,Columbian Medium Roast Rg,Regular,2,Gourmet brewed coffee,Coffee,Beverage,2.5
+30,Columbian Medium Roast,Columbian Medium Roast Lg,Large,3,Gourmet brewed coffee,Coffee,Beverage,3.0
+31,Ethiopia,Ethiopia Sm,Small,1,Gourmet brewed coffee,Coffee,Beverage,2.2
+32,Ethiopia,Ethiopia Rg,Regular,2,Gourmet brewed coffee,Coffee,Beverage,3.0
+33,Ethiopia,Ethiopia Lg,Large,3,Gourmet brewed coffee,Coffee,Beverage,3.5
+34,Jamaican Coffee River,Jamaican Coffee River Sm,Small,1,Premium brewed coffee,Coffee,Beverage,2.45
+35,Jamaican Coffee River,Jamaican Coffee River Rg,Regular,2,Premium brewed coffee,Coffee,Beverage,3.1
+36,Jamaican Coffee River,Jamaican Coffee River Lg,Large,3,Premium brewed coffee,Coffee,Beverage,3.75
+37,Espresso shot,Espresso shot,Unlabelled,4,Barista Espresso,Coffee,Beverage,3.0
+38,Latte,Latte,Unlabelled,4,Barista Espresso,Coffee,Beverage,3.75
+39,Latte,Latte Rg,Regular,2,Barista Espresso,Coffee,Beverage,4.25
+40,Cappuccino,Cappuccino,Unlabelled,4,Barista Espresso,Coffee,Beverage,3.75
+41,Cappuccino,Cappuccino Lg,Large,3,Barista Espresso,Coffee,Beverage,4.25
+42,Lemon Grass,Lemon Grass Rg,Regular,2,Brewed herbal tea,Tea,Beverage,2.5
+43,Lemon Grass,Lemon Grass Lg,Large,3,Brewed herbal tea,Tea,Beverage,3.0
+44,Peppermint,Peppermint Rg,Regular,2,Brewed herbal tea,Tea,Beverage,2.5
+45,Peppermint,Peppermint Lg,Large,3,Brewed herbal tea,Tea,Beverage,3.0
+46,Serenity Green Tea,Serenity Green Tea Rg,Regular,2,Brewed Green tea,Tea,Beverage,2.5
+47,Serenity Green Tea,Serenity Green Tea Lg,Large,3,Brewed Green tea,Tea,Beverage,3.0
+48,English Breakfast,English Breakfast Rg,Regular,2,Brewed Black tea,Tea,Beverage,2.5
+49,English Breakfast,English Breakfast Lg,Large,3,Brewed Black tea,Tea,Beverage,3.0
+50,Earl Grey,Earl Grey Rg,Regular,2,Brewed Black tea,Tea,Beverage,2.5
+51,Earl Grey,Earl Grey Lg,Large,3,Brewed Black tea,Tea,Beverage,3.0
+52,Traditional Blend Chai,Traditional Blend Chai Rg,Regular,2,Brewed Chai tea,Tea,Beverage,2.5
+53,Traditional Blend Chai,Traditional Blend Chai Lg,Large,3,Brewed Chai tea,Tea,Beverage,3.0
+54,Morning Sunrise Chai,Morning Sunrise Chai Rg,Regular,2,Brewed Chai tea,Tea,Beverage,2.5
+55,Morning Sunrise Chai,Morning Sunrise Chai Lg,Large,3,Brewed Chai tea,Tea,Beverage,4.0
+56,Spicy Eye Opener Chai,Spicy Eye Opener Chai Rg,Regular,2,Brewed Chai tea,Tea,Beverage,2.55
+57,Spicy Eye Opener Chai,Spicy Eye Opener Chai Lg,Large,3,Brewed Chai tea,Tea,Beverage,3.1
+58,Dark chocolate,Dark chocolate Rg,Regular,2,Hot chocolate,Drinking Chocolate,Beverage,3.5
+59,Dark chocolate,Dark chocolate Lg,Large,3,Hot chocolate,Drinking Chocolate,Beverage,4.5
+60,Sustainably Grown Organic,Sustainably Grown Organic Rg,Regular,2,Hot chocolate,Drinking Chocolate,Beverage,3.75
+61,Sustainably Grown Organic,Sustainably Grown Organic Lg,Large,3,Hot chocolate,Drinking Chocolate,Beverage,4.75
+63,Carmel syrup,Carmel syrup,Not applicable,5,Regular syrup,Flavours,Non-beverage,0.8
+64,Hazelnut syrup,Hazelnut syrup,Not applicable,5,Regular syrup,Flavours,Non-beverage,0.8
+65,Sugar Free Vanilla syrup,Sugar Free Vanilla syrup,Not applicable,5,Sugar free syrup,Flavours,Non-beverage,0.8
+69,Hazelnut Biscotti,Hazelnut Biscotti,Not applicable,5,Biscotti,Bakery,Non-beverage,3.25
+70,Cranberry Scone,Cranberry Scone,Not applicable,5,Scone,Bakery,Non-beverage,3.25
+71,Chocolate Croissant,Chocolate Croissant,Not applicable,5,Pastry,Bakery,Non-beverage,3.75
+72,Ginger Scone,Ginger Scone,Not applicable,5,Scone,Bakery,Non-beverage,3.25
+73,Almond Croissant,Almond Croissant,Not applicable,5,Pastry,Bakery,Non-beverage,3.75
+74,Ginger Biscotti,Ginger Biscotti,Not applicable,5,Biscotti,Bakery,Non-beverage,3.5
+75,Croissant,Croissant,Not applicable,5,Pastry,Bakery,Non-beverage,3.5
+76,Chocolate Chip Biscotti,Chocolate Chip Biscotti,Not applicable,5,Biscotti,Bakery,Non-beverage,3.5
+77,Oatmeal Scone,Oatmeal Scone,Not applicable,5,Scone,Bakery,Non-beverage,3.0
+78,Scottish Cream Scone,Scottish Cream Scone,Not applicable,5,Scone,Bakery,Non-beverage,4.5
+79,Jumbo Savory Scone,Jumbo Savory Scone,Not applicable,5,Scone,Bakery,Non-beverage,3.75
+81,I Need My Bean! T-shirt,I Need My Bean! T-shirt,Not applicable,5,Clothing,Branded,Non-beverage,28.0
+82,I Need My Bean! Diner mug,I Need My Bean! Diner mug,Not applicable,5,Housewares,Branded,Non-beverage,12.0
+83,I Need My Bean! Latte cup,I Need My Bean! Latte cup,Not applicable,5,Housewares,Branded,Non-beverage,14.0
+84,Chocolate syrup,Chocolate syrup,Not applicable,5,Regular syrup,Flavours,Non-beverage,0.8
+87,Ouro Brasileiro shot,Ouro Brasileiro shot,Unlabelled,4,Barista Espresso,Coffee,Beverage,3.0

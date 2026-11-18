@@ -1,0 +1,46 @@
+Type,Category,Term,Definition,Formula / Logic,Notes,Type Order,Row Order
+Measure,Sales,Total Revenue,Sum of line revenue (quantity × unit price) in USD.,SUM ( fact_sales[line_revenue] ),,2,1
+Measure,Sales,Line Items,Number of product lines sold. Not customer visits: the source has no receipt ID.,COUNTROWS ( fact_sales ),,2,2
+Measure,Sales,Units Sold,Total quantity of items sold.,SUM ( fact_sales[transaction_qty] ),,2,3
+Measure,Sales,Avg Line Value,Revenue divided by line items: average value of one product line.,"DIVIDE ( [Total Revenue], [Line Items] )",,2,4
+Measure,Sales,Avg Unit Price,Revenue divided by units: average price paid per item.,"DIVIDE ( [Total Revenue], [Units Sold] )",,2,5
+Measure,Sales,Trading Days,Number of days with at least one sale in the current filter.,DISTINCTCOUNT ( fact_sales[date_key] ),,2,6
+Measure,Sales,Revenue per Day,Revenue divided by trading days. Use this to compare months of different length.,"DIVIDE ( [Total Revenue], [Trading Days] )",,2,7
+Measure,Time intelligence,Revenue Previous Month,"Total revenue for the same filter, one month earlier.","CALCULATE ( [Total Revenue], DATEADD ( dim_date[date], -1, MONTH ) )",,2,8
+Measure,Time intelligence,Revenue MoM %,Change in revenue vs the previous month. Blank for January (no earlier data).,"VAR prev = [Revenue Previous Month] RETURN IF ( NOT ISBLANK ( prev ), DIVIDE ( [Total Revenue] - prev, prev ) )",Needs dim_date marked as the date table (it is).,2,9
+Measure,Time intelligence,Revenue YTD,Revenue from 1 January to the end of the selected period.,"TOTALYTD ( [Total Revenue], dim_date[date] )",,2,10
+Measure,Share,Revenue Share %,Share of the revenue currently shown in the visual (respects slicers).,"DIVIDE ( [Total Revenue], CALCULATE ( [Total Revenue], ALLSELECTED () ) )",,2,11
+Measure,Share,Category Share %,"Share of revenue across all products, ignoring product filters (store/date filters still apply).","DIVIDE ( [Total Revenue], CALCULATE ( [Total Revenue], ALL ( dim_product ) ) )",,2,12
+Measure,Share,Morning Revenue Share %,"Share of revenue earned before 11:00, including the 06:00 hour.","DIVIDE ( CALCULATE ( [Total Revenue], KEEPFILTERS ( dim_time[hour] < 11 ) ), [Total Revenue] )",KEEPFILTERS keeps any hour / size filter already on the visual.,2,13
+Measure,Share,Large Size Share %,"Large-size line items as a share of all sized line items (Small, Regular, Large).","DIVIDE ( CALCULATE ( [Line Items], KEEPFILTERS ( dim_product[size] = ""Large"" ) ), CALCULATE ( [Line Items], dim_product[size] IN { ""Small"", ""Regular"", ""Large"" } ) )",KEEPFILTERS keeps any hour / size filter already on the visual.,2,14
+Table,Fact,fact_sales,"One row per product line sold (149,116 rows, 1 Jan – 30 Jun 2023).","Keys: date_key, time_key, store_id, product_id",Holds all measures.,3,15
+Table,Dimension,dim_date,One row per calendar day (181 rows). Marked as the date table.,Joined on date_key (yyyymmdd),Hierarchy: Year > Quarter > Month > Date.,3,16
+Table,Dimension,dim_time,"One row per minute of the day (1,440 rows).",Joined on time_key (hhmm),Use hour or day_part for time-of-day analysis.,3,17
+Table,Dimension,dim_store,"One row per store (3 rows): Astoria, Hell's Kitchen, Lower Manhattan.",Joined on store_id,,3,18
+Table,Dimension,dim_product,"One row per product (80 rows) with category, type, size and base name.",Joined on product_id,,3,19
+Table,Reference,Glossary,This list. Not connected to the model.,,,3,20
+Column,fact_sales,line_revenue,Revenue for one line: transaction_qty × unit_price.,transaction_qty * unit_price,Rounded to 2 decimals.,4,21
+Column,fact_sales,unit_price,"Price per item on that line, in USD.",,A few products have more than one price over the period.,4,22
+Column,fact_sales,transaction_qty,"Number of items on the line (1–8, mostly 1–2).",,,4,23
+Column,fact_sales,transaction_time,Time of sale as text (hh:mm:ss).,,,4,24
+Column,dim_date,date_key,"Integer date key, yyyymmdd (e.g. 20230115).",,Hidden; used only for the relationship.,4,25
+Column,dim_date,week_start,Monday of the week the date falls in.,,,4,26
+Column,dim_date,year_month,"Year and month as text, e.g. 2023-03.",,,4,27
+Column,dim_date,is_weekend,"Weekend for Saturday/Sunday, otherwise Weekday.",,,4,28
+Column,dim_time,time_key,"Integer time key, hhmm (e.g. 0715 = 7:15am).",hour * 100 + minute,Hidden; used only for the relationship.,4,29
+Column,dim_time,half_hour,"30-minute bucket label, e.g. 07:30.",,,4,30
+Column,dim_time,day_part,"Morning (before 11), Midday (11–14), Afternoon (14–17), Evening (17+).",Based on hour,Sorted by day_part_order.,4,31
+Column,dim_product,product_name,"Product name without the size suffix (e.g. ""Latte"").",,,4,32
+Column,dim_product,product_detail,"Product name as in the source, including size suffix (e.g. ""Latte Rg"").",,"Leading/trailing spaces are trimmed in the ETL. ""Jamacian"" is a spelling error kept from the source.",4,33
+Column,dim_product,size,"Small / Regular / Large from the Sm / Rg / Lg suffix. ""Unlabelled"" = a made-to-order drink with no size in its name (Latte, Cappuccino, Espresso shot, Ouro Brasileiro shot). ""Not applicable"" = bakery, beans, retail and merchandise.",,"Sorted by size_order. ""Unlabelled"" drinks are among the best sellers, so they are not duplicates to remove.",4,34
+Column,dim_product,product_category,"Top product level: Coffee, Tea, Bakery, Drinking Chocolate, Coffee beans, Branded, Loose Tea, Flavours, Packaged Chocolate.",,,4,35
+Column,dim_product,product_type,"Middle product level, e.g. Barista Espresso, Brewed Chai tea, Scone.",,,4,36
+Column,dim_product,is_beverage,"Beverage for Coffee, Tea and Drinking Chocolate; otherwise Non-beverage.",,,4,37
+Column,dim_product,list_price,Typical (median) unit price of the product across the period.,,,4,38
+Concept,Business term,Line item,"One product sold on one order line, with a quantity.",,"Not a customer visit or receipt: the source has no basket ID, so basket size and attach rates cannot be measured.",1,39
+Concept,Business term,Revenue,"Money from sales in USD before costs. No discounts, tax or refunds appear in the source.",,,1,40
+Concept,Business term,Trading day,A day with at least one sale.,,All 181 days in the period traded.,1,41
+Concept,Business term,Morning,"Sales before 11:00, including the 06:00 hour.",,The 7–11am window alone is about 46% of revenue.,1,42
+Concept,Modelling,Star schema,"One central fact table (sales) joined to descriptive dimension tables (date, time, store, product).",,,1,43
+Concept,Modelling,Relationship direction,"All relationships are many-to-one, filtering from dimension to fact only.",,,1,44
+Concept,Data source,Source data,"data/raw/coffee_shop_sales.xlsx (Maven Analytics, public domain), turned into the CSV files in data/processed by etl/build_star_schema.py.",DataFolder parameter = <repo folder>\data\processed\ ,Change the DataFolder parameter to your own clone path before refreshing.,1,45

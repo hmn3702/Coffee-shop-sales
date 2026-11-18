@@ -1,0 +1,58 @@
+table dim_time
+	lineageTag: 69856344-aa53-4ca6-8bea-9edfd9a7fab6
+
+	column time_key
+		dataType: int64
+		isHidden
+		lineageTag: 568f8133-a239-4b22-bdec-b61ab2479456
+		summarizeBy: none
+		sourceColumn: time_key
+
+	column hour
+		dataType: int64
+		lineageTag: 5d4f8d42-12b2-496b-8213-8d7743f03818
+		summarizeBy: none
+		sourceColumn: hour
+
+	column minute
+		dataType: int64
+		lineageTag: 509924f8-0d16-4aa6-af8a-fa1c615150b1
+		summarizeBy: none
+		sourceColumn: minute
+
+	column hour_label
+		dataType: string
+		lineageTag: 3d0488c8-6b24-4106-abf2-59423e8a21cc
+		summarizeBy: none
+		sourceColumn: hour_label
+
+	column half_hour
+		dataType: string
+		lineageTag: 1c10c37a-8860-45f6-9c52-1810fad0a0a6
+		summarizeBy: none
+		sourceColumn: half_hour
+
+	column day_part
+		dataType: string
+		lineageTag: 6698c050-d5f7-4f0a-a5dd-090ea99368d7
+		summarizeBy: none
+		sourceColumn: day_part
+		sortByColumn: day_part_order
+
+	column day_part_order
+		dataType: int64
+		isHidden
+		lineageTag: c0146de1-ee75-4fde-bd2a-9fd39b043edd
+		summarizeBy: none
+		sourceColumn: day_part_order
+
+	partition dim_time = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "dim_time.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    Typed = Table.TransformColumnTypes(Promoted, {{"time_key", Int64.Type}, {"hour", Int64.Type}, {"minute", Int64.Type}, {"hour_label", type text}, {"half_hour", type text}, {"day_part", type text}, {"day_part_order", Int64.Type}}, "en-US")
+				in
+				    Typed
+

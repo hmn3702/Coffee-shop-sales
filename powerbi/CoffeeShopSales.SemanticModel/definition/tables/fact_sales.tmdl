@@ -1,0 +1,162 @@
+table fact_sales
+	lineageTag: 90ddd9ff-5f01-49cf-9709-41cd51c1f4b7
+
+	/// Sum of line revenue (quantity × unit price) in USD.
+	measure 'Total Revenue' = SUM ( fact_sales[line_revenue] )
+		formatString: \$#,0;(\$#,0);\$#,0
+		displayFolder: Sales
+		lineageTag: fb70414b-1b5d-4785-987e-8e95bb44ae86
+
+	/// Number of product lines sold. Not customer visits: the source has no receipt ID.
+	measure 'Line Items' = COUNTROWS ( fact_sales )
+		formatString: #,0
+		displayFolder: Sales
+		lineageTag: 8dc70e5d-44da-472c-89d0-d659cc9f13c9
+
+	/// Total quantity of items sold.
+	measure 'Units Sold' = SUM ( fact_sales[transaction_qty] )
+		formatString: #,0
+		displayFolder: Sales
+		lineageTag: 84bbbe6f-8846-4e90-bb5d-ea1e26a26f33
+
+	/// Revenue divided by line items: average value of one product line.
+	measure 'Avg Line Value' = DIVIDE ( [Total Revenue], [Line Items] )
+		formatString: \$#,0.00
+		displayFolder: Sales
+		lineageTag: d4b0eded-9278-4d0f-afbc-66e7b6a436b1
+
+	/// Revenue divided by units: average price paid per item.
+	measure 'Avg Unit Price' = DIVIDE ( [Total Revenue], [Units Sold] )
+		formatString: \$#,0.00
+		displayFolder: Sales
+		lineageTag: bad365d3-529f-4fa7-9f28-7739d4445fb4
+
+	/// Number of days with at least one sale in the current filter.
+	measure 'Trading Days' = DISTINCTCOUNT ( fact_sales[date_key] )
+		formatString: #,0
+		displayFolder: Sales
+		lineageTag: 4f3b04ed-6400-46f6-92d4-ea827a2c302a
+
+	/// Revenue divided by trading days. Use this to compare months of different length.
+	measure 'Revenue per Day' = DIVIDE ( [Total Revenue], [Trading Days] )
+		formatString: \$#,0
+		displayFolder: Sales
+		lineageTag: 6ef1108b-ed38-4405-971d-db257fcb6a85
+
+	/// Total revenue for the same filter, one month earlier.
+	measure 'Revenue Previous Month' = CALCULATE ( [Total Revenue], DATEADD ( dim_date[date], -1, MONTH ) )
+		formatString: \$#,0
+		displayFolder: Time intelligence
+		lineageTag: 38083fa0-0a71-4c57-818e-45d3c4041aa2
+
+	/// Change in revenue vs the previous month. Blank for January (no earlier data).
+	measure 'Revenue MoM %' =
+			VAR prev = [Revenue Previous Month]
+			RETURN IF ( NOT ISBLANK ( prev ), DIVIDE ( [Total Revenue] - prev, prev ) )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Time intelligence
+		lineageTag: 3b743d61-26c2-447b-b839-151e7f3b2456
+
+	/// Revenue from 1 January to the end of the selected period.
+	measure 'Revenue YTD' = TOTALYTD ( [Total Revenue], dim_date[date] )
+		formatString: \$#,0
+		displayFolder: Time intelligence
+		lineageTag: 33df1ff2-583c-40ba-8a51-9cf1ebd431d0
+
+	/// Share of the revenue currently shown in the visual (respects slicers).
+	measure 'Revenue Share %' = DIVIDE ( [Total Revenue], CALCULATE ( [Total Revenue], ALLSELECTED () ) )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Share
+		lineageTag: 678aa5cc-db3c-46ae-97af-9061a714af95
+
+	/// Share of revenue across all products, ignoring product filters (store/date filters still apply).
+	measure 'Category Share %' = DIVIDE ( [Total Revenue], CALCULATE ( [Total Revenue], ALL ( dim_product ) ) )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Share
+		lineageTag: dc48bf11-757c-4cb1-966b-6542055651bd
+
+	/// Share of revenue earned before 11:00, including the 06:00 hour.
+	measure 'Morning Revenue Share %' = DIVIDE ( CALCULATE ( [Total Revenue], KEEPFILTERS ( dim_time[hour] < 11 ) ), [Total Revenue] )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Share
+		lineageTag: ac482760-cd69-4805-8909-6c66d6a2ead9
+
+	/// Large-size line items as a share of all sized line items (Small, Regular, Large).
+	measure 'Large Size Share %' = DIVIDE ( CALCULATE ( [Line Items], KEEPFILTERS ( dim_product[size] = "Large" ) ), CALCULATE ( [Line Items], dim_product[size] IN { "Small", "Regular", "Large" } ) )
+		formatString: 0.0%;-0.0%;0.0%
+		displayFolder: Share
+		lineageTag: ca243d56-bd3e-4945-b407-d43e7e6489e3
+
+	column transaction_id
+		dataType: int64
+		lineageTag: 326efb72-e969-4906-a253-fcf522103604
+		summarizeBy: none
+		sourceColumn: transaction_id
+
+	column date_key
+		dataType: int64
+		isHidden
+		lineageTag: beaa443f-ba1b-45e5-8dbb-919b54445fd7
+		summarizeBy: none
+		sourceColumn: date_key
+
+	column time_key
+		dataType: int64
+		isHidden
+		lineageTag: ccf2a86f-1f69-4a25-89c8-498be80251ce
+		summarizeBy: none
+		sourceColumn: time_key
+
+	column transaction_time
+		dataType: string
+		lineageTag: e97852d0-960e-4aed-a93f-01c3f8fed0b9
+		summarizeBy: none
+		sourceColumn: transaction_time
+
+	column store_id
+		dataType: int64
+		isHidden
+		lineageTag: a4a4db90-05d4-46b7-9edb-4d01b7216ce7
+		summarizeBy: none
+		sourceColumn: store_id
+
+	column product_id
+		dataType: int64
+		isHidden
+		lineageTag: 53d078d6-0f39-46dc-ae28-c73524980e2a
+		summarizeBy: none
+		sourceColumn: product_id
+
+	column transaction_qty
+		dataType: int64
+		isHidden
+		lineageTag: 28d114d4-6c4d-4b38-b212-b9226c5d0f5a
+		summarizeBy: sum
+		sourceColumn: transaction_qty
+
+	column unit_price
+		dataType: decimal
+		isHidden
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: b9e219ca-1d16-4352-8ee0-9822cff8e263
+		summarizeBy: none
+		sourceColumn: unit_price
+
+	column line_revenue
+		dataType: decimal
+		isHidden
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: f516d66f-1ff4-4dd4-996e-771fd4c5391c
+		summarizeBy: none
+		sourceColumn: line_revenue
+
+	partition fact_sales = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "fact_sales.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    Promoted = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    Typed = Table.TransformColumnTypes(Promoted, {{"transaction_id", Int64.Type}, {"date_key", Int64.Type}, {"time_key", Int64.Type}, {"transaction_time", type text}, {"store_id", Int64.Type}, {"product_id", Int64.Type}, {"transaction_qty", Int64.Type}, {"unit_price", Currency.Type}, {"line_revenue", Currency.Type}}, "en-US")
+				in
+				    Typed
+
